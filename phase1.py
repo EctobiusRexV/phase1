@@ -26,12 +26,13 @@ def analyser_commande():
     parser.add_argument(
         '-d', '--debut',
         dest='debut',
-
+        help='date de début',
     )
 
     parser.add_argument(
         '-f', '--fin',
         dest='fin',
+        help='date de fin',
     )
 
     parser.add_argument(
@@ -39,6 +40,7 @@ def analyser_commande():
         dest='valeur',
         choices=['fermeture', 'ouverture', 'min', 'max', 'volume'],
         default='fermeture',
+        help='valeur de arg'
     )
 
     # Complétez le code ici
