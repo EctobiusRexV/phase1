@@ -13,7 +13,33 @@ def analyser_commande():
         symboles à traiter, et les attributs «début», «fin» et «valeur»
         associés aux arguments optionnels de la ligne de commande.
     """
-    parser = argparse.ArgumentParser()
+    parser = argparse.ArgumentParser(
+        description="Prend les données dans le terminal lors du lancement de l'application et les traduits en arguments boursiers"
+    )
+
+    parser.add_argument(
+        '-h', '--help',
+        action='store_true',
+        help="obtenir de l'aide",
+    )
+
+    parser.add_argument(
+        '-d', '--debut',
+        dest='debut',
+
+    )
+
+    parser.add_argument(
+        '-f', '--fin',
+        dest='fin',
+    )
+
+    parser.add_argument(
+        '-v', '--valeur',
+        dest='valeur',
+        choices=['fermeture', 'ouverture', 'min', 'max', 'volume'],
+        default='fermeture',
+    )
 
     # Complétez le code ici
     # vous pourriez aussi avoir à ajouter des arguments dans ArgumentParser(...)
@@ -22,4 +48,8 @@ def analyser_commande():
 
 def produire_historique(titre, debut, fin, valeur):
 
+
     return ()
+
+if __name__ == "__main__":
+    analyser_commande()
