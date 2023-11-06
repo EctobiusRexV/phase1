@@ -1,6 +1,7 @@
 import argparse
 import requests
 import json
+from datetime import date
 
 
 def analyser_commande():
@@ -13,13 +14,18 @@ def analyser_commande():
         symboles à traiter, et les attributs «début», «fin» et «valeur»
         associés aux arguments optionnels de la ligne de commande.
     """
+
+    
+
     parser = argparse.ArgumentParser(
-        description="Extraction de valeurs historiques pour un ou plusieurs symboles boursiers."
+        description="Extraction de valeurs historiques pour un ou plusieurs symboles boursiers.",
+        
     )
 
     parser.add_argument(
         'symbole',
         help="Nom d'un symbole boursier",
+        nargs = "+",
         )
 
     parser.add_argument(
@@ -51,13 +57,47 @@ def analyser_commande():
 
 def produire_historique(symbole, debut, fin, valeur):
 
+    
 
-    return ()
+    url = f'https://pax.ulaval.ca/action/{symbole}/historique/'
+
+    if fin == None:
+        fin = date.today()
+
+    if debut == None:
+        debut = fin
+
+    print(f'titre={symbole}: valeur={valeur}, début={debut}, fin={fin}')
+
+    params = {
+        'début': debut,
+        'fin': fin,
+        'valeur': valeur,
+    }
+
+    réponse = json.loads(requests.get(url, params).text)
+
+    liste_rep = list()
+
+    historique = réponse.get('historique')
+
+    for date in historique:
+        liste_rep.append(tuple([date, historique.get(date).get(valeur)]))
+
+    #for rep in réponse:
+    #   list.append(rep.get(valeur))
+
+    #print(list)
+
+    print(liste_rep)
+
+    return liste_rep
+
 
 if __name__ == "__main__":
     parser = analyser_commande()
-    
-    #produire_historique(parser.symbole)
 
-    print(parser.symbole)
+    produire_historique(parser.symbole, parser.debut, parser.fin, parser.valeur)
+
+    
     
