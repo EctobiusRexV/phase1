@@ -1,7 +1,7 @@
 import argparse
 import requests
 import json
-from datetime import date
+import datetime
 
 
 def analyser_commande():
@@ -25,7 +25,7 @@ def analyser_commande():
     parser.add_argument(
         'symbole',
         help="Nom d'un symbole boursier",
-        nargs = "+",
+        #nargs = "+",
         )
 
     parser.add_argument(
@@ -62,7 +62,7 @@ def produire_historique(symbole, debut, fin, valeur):
     url = f'https://pax.ulaval.ca/action/{symbole}/historique/'
 
     if fin == None:
-        fin = date.today()
+        fin = datetime.date.today()
 
     if debut == None:
         debut = fin
@@ -84,12 +84,7 @@ def produire_historique(symbole, debut, fin, valeur):
     for date in historique:
         liste_rep.append(tuple([date, historique.get(date).get(valeur)]))
 
-    #for rep in réponse:
-    #   list.append(rep.get(valeur))
 
-    #print(list)
-
-    print(liste_rep)
 
     return liste_rep
 
@@ -97,7 +92,6 @@ def produire_historique(symbole, debut, fin, valeur):
 if __name__ == "__main__":
     parser = analyser_commande()
 
-    produire_historique(parser.symbole, parser.debut, parser.fin, parser.valeur)
+    historique = produire_historique(parser.symbole, parser.debut, parser.fin, parser.valeur)
 
-    
-    
+    print(historique)
