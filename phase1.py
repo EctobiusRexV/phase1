@@ -25,7 +25,8 @@ def analyser_commande():
     parser.add_argument(
         'symbole',
         help="Nom d'un symbole boursier",
-        #nargs = "+",
+        type=str,
+        nargs = "+",
         )
 
     parser.add_argument(
@@ -57,32 +58,32 @@ def analyser_commande():
 
 def produire_historique(symbole, debut, fin, valeur):
 
-    
+    for sym in symbole:
 
-    url = f'https://pax.ulaval.ca/action/{symbole}/historique/'
+        url = f'https://pax.ulaval.ca/action/{sym}/historique/'
 
-    if fin == None:
-        fin = datetime.date.today()
+        if fin == None:
+            fin = datetime.date.today()
 
-    if debut == None:
-        debut = fin
+        if debut == None:
+            debut = fin
 
-    print(f'titre={symbole}: valeur={valeur}, début={debut}, fin={fin}')
+        print(f'titre={sym}: valeur={valeur}, début={debut}, fin={fin}')
 
-    params = {
-        'début': debut,
-        'fin': fin,
-        'valeur': valeur,
-    }
+        params = {
+            'début': debut,
+            'fin': fin,
+            'valeur': sym,
+        }
 
-    réponse = json.loads(requests.get(url, params).text)
+        réponse = json.loads(requests.get(url, params).text)
 
-    liste_rep = list()
+        liste_rep = list()
 
-    historique = réponse.get('historique')
+        historique = réponse.get('historique')
 
-    for date in historique:
-        liste_rep.append(tuple([date, historique.get(date).get(valeur)]))
+        for date in historique:
+            liste_rep.append(tuple([date, historique.get(date).get(valeur)]))
 
 
 
