@@ -49,11 +49,15 @@ def analyser_commande():
 
     return parser.parse_args()
 
-def produire_historique(titre, debut, fin, valeur):
+def produire_historique(symbole, debut, fin, valeur):
 
 
     return ()
 
 if __name__ == "__main__":
     parser = analyser_commande()
+    
+    #produire_historique(parser.symbole)
+
+    print(parser.symbole)
     
