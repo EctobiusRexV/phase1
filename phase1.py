@@ -58,21 +58,29 @@ def analyser_commande():
 
 def produire_historique(symbole, debut, fin, valeur):
 
+    if debut is not None:
+        de = datetime.date(int(debut[0:4]), int(debut[5:7]), int(debut[8:10]))
+    
+    if fin is not None:
+        fi = datetime.date(int(fin[0:4]), int(fin[5:7]), int(fin[8:10]))
+
     for sym in symbole:
 
         url = f'https://pax.ulaval.ca/action/{sym}/historique/'
 
         if fin == None:
-            fin = datetime.date.today()
+            fi = datetime.date.today()
 
         if debut == None:
-            debut = fin
+            de = fi
 
-        print(f'titre={sym}: valeur={valeur}, début={debut}, fin={fin}')
+        
+
+        print(f'titre={sym}: valeur={valeur}, début={de.__repr__()}, fin={fi.__repr__()}')
 
         params = {
-            'début': debut,
-            'fin': fin,
+            'début': de,
+            'fin': fi,
             'valeur': sym,
         }
 
@@ -83,9 +91,8 @@ def produire_historique(symbole, debut, fin, valeur):
         historique = réponse.get('historique')
 
         for date in historique:
-            liste_rep.append(tuple([date, historique.get(date).get(valeur)]))
-
-
+            day = datetime.date(int(date[0:4]), int(date[5:7]), int(date[8:10]))
+            liste_rep.append(tuple([day, historique.get(date).get(valeur)]))
 
     return liste_rep
 
