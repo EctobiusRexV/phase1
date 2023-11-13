@@ -65,7 +65,6 @@ def produire_historique(symbole, debut, fin, valeur):
 
     if debut is not None:
         de = datetime.date(int(debut[0:4]), int(debut[5:7]), int(debut[8:10]))
-    
     if fin is not None:
         fi = datetime.date(int(fin[0:4]), int(fin[5:7]), int(fin[8:10]))
 
@@ -104,6 +103,8 @@ def produire_historique(symbole, debut, fin, valeur):
 if __name__ == "__main__":
     arguments = analyser_commande()
 
-    historique = produire_historique(arguments.symbole, arguments.debut, arguments.fin, arguments.valeur)
+    historique = produire_historique(
+        arguments.symbole, arguments.debut, arguments.fin, arguments.valeur
+        )
 
     print(historique)
