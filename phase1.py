@@ -1,7 +1,8 @@
+"""Imports pour le programme"""
 import argparse
-import requests
 import json
 import datetime
+import requests
 
 
 def analyser_commande():
@@ -15,12 +16,10 @@ def analyser_commande():
         associés aux arguments optionnels de la ligne de commande.
     """
 
-    
 
     parser = argparse.ArgumentParser(
         description="Extraction de valeurs historiques pour un ou plusieurs symboles boursiers.",
-        
-    )
+        )
 
     parser.add_argument(
         'symbole',
@@ -57,6 +56,12 @@ def analyser_commande():
     return parser.parse_args()
 
 def produire_historique(symbole, debut, fin, valeur):
+    """
+    Produit l'historique à partir de l'API
+
+    Returns:
+        Liste de tuples de dates et des valeurs demandées.
+    """
 
     if debut is not None:
         de = datetime.date(int(debut[0:4]), int(debut[5:7]), int(debut[8:10]))
@@ -65,16 +70,13 @@ def produire_historique(symbole, debut, fin, valeur):
         fi = datetime.date(int(fin[0:4]), int(fin[5:7]), int(fin[8:10]))
 
     for sym in symbole:
-
         url = f'https://pax.ulaval.ca/action/{sym}/historique/'
 
-        if fin == None:
+        if fin is None:
             fi = datetime.date.today()
 
-        if debut == None:
+        if debut is None:
             de = fi
-
-        
 
         print(f'titre={sym}: valeur={valeur}, début={de.__repr__()}, fin={fi.__repr__()}')
 
@@ -86,13 +88,13 @@ def produire_historique(symbole, debut, fin, valeur):
 
         réponse = json.loads(requests.get(url, params).text)
 
-        liste_rep = list()
+        liste_rep = []
 
-        historique = réponse.get('historique')
+        histo = réponse.get('historique')
 
-        for date in historique:
+        for date in histo:
             day = datetime.date(int(date[0:4]), int(date[5:7]), int(date[8:10]))
-            liste_rep.append(tuple([day, historique.get(date).get(valeur)]))
+            liste_rep.append(tuple([day, histo.get(date).get(valeur)]))
 
     liste_rep.sort()
 
@@ -100,8 +102,8 @@ def produire_historique(symbole, debut, fin, valeur):
 
 
 if __name__ == "__main__":
-    parser = analyser_commande()
+    arguments = analyser_commande()
 
-    historique = produire_historique(parser.symbole, parser.debut, parser.fin, parser.valeur)
+    historique = produire_historique(arguments.symbole, arguments.debut, arguments.fin, arguments.valeur)
 
     print(historique)
