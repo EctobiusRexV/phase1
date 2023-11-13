@@ -94,6 +94,8 @@ def produire_historique(symbole, debut, fin, valeur):
             day = datetime.date(int(date[0:4]), int(date[5:7]), int(date[8:10]))
             liste_rep.append(tuple([day, historique.get(date).get(valeur)]))
 
+    liste_rep.sort()
+
     return liste_rep
 
 
